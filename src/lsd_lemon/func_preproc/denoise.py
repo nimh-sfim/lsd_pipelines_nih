@@ -49,7 +49,9 @@ def create_denoise_pipeline(name='denoise'):
                                                                'comp_regressor',
                                                                'comp_F',
                                                                'comp_pF',
-                                                               'normalized_file']),
+                                                               'normalized_file',
+                                                               'bandpassed_file',
+                                                               'denoised_file']),
                      name='outputnode')
     
     
@@ -206,7 +208,8 @@ def create_denoise_pipeline(name='denoise'):
                      (createfilter2, filter2, [('out_files', 'design')]),
                      (resample_brain, filter2, [('out_file', 'mask')]),
                      (filter2, outputnode, [('out_f', 'comp_F'),
-                                            ('out_pf', 'comp_pF')])
+                                            ('out_pf', 'comp_pF'),
+                                            ('out_res','denoised_file')])
                      ])
 
     # bandpass filter denoised file
@@ -231,6 +234,7 @@ def create_denoise_pipeline(name='denoise'):
     
     denoise.connect([(inputnode, normalize_time, [('tr', 'tr')]),
                      (bandpass_filter, normalize_time, [('out_file', 'in_file')]),
+                     (bandpass_filter, outputnode, [('out_file','bandpassed_file')]),
                      (normalize_time, outputnode, [('out_file', 'normalized_file')])
                      ])
     

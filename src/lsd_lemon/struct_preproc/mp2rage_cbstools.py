@@ -30,21 +30,40 @@ def create_mp2rage_pipeline(name='mp2rage'):
                                                    #'uni_reoriented'
                                                    ]),
                 name='outputnode')
-    
-    # remove background noise
+
+    # JAVIER: remove background noise
     background = Node(JistIntensityMp2rageMasking(outMasked=True,
                                             outMasked2=True,
-                                            outSignal2=True), 
-                      name='background')
+                                            outSignal2=True,
+                                            inSkip='true',
+                                            inMasking='binary',
+                                            inBackground='exponential', innoniterative='false'),
+                                            name='background')
+    # ORIGINAL: remove background noise
+    #background = Node(JistIntensityMp2rageMasking(outMasked=True,
+    #                                        outMasked2=True,
+    #                                        outSignal2=True), 
+    #                  name='background')
+    # end of ORIGINAL
     
     # skullstrip
     strip = Node(MedicAlgorithmSPECTRE2010(outStripped=True,
                                            outMask=True,
                                            outOriginal=True,
-                                           inOutput='true',
+                                           inOutput='true',inOutput2='true', inOutput3='true',inOutput4='true',inOutput5="Trilinear",
                                            inFind='true',
-                                           inMMC=4
-                                           ), 
+                                           inMMC=4, inMMC2=2,
+                                           inImage='T1_MPRAGE',
+                                           inRun='true',
+                                           inInitial=5, inInitial2=0.35,
+                                           inResample='false',
+                                           inMinimum=0.1,
+                                           inInhomogeneity='false',
+                                           inSmoothing=0.02,
+                                           inBackground=0.001,
+                                           inSkip='false',inSubsample='true',inUse='true', inMultithreading='false',
+                                           inNumber=2, inNumber2=3,inMultiple=10,inFine=6, inCoarse=15, inMaximum=30, inMinimum2=-30, inApply='All',
+                                           inDegrees='Affine - 12', inCost='Correlation ratio', inRegistration="Trilinear"),
                  name='strip')
     
     # connections

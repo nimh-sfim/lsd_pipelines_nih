@@ -31,8 +31,11 @@ def create_mp2rage_pipeline(name='mp2rage'):
     # remove background noise
     background = Node(JistIntensityMp2rageMasking(outMasked=True,
                                             outMasked2=True,
-                                            outSignal2=True), 
-                      name='background')
+                                            outSignal2=True,
+                                            inSkip='true',
+                                            inMasking='binary',
+                                            inBackground='exponential', innoniterative='false'),
+                                            name='background')
     
     # skullstrip
 #     strip = Node(MedicAlgorithmSPECTRE2010(outStripped=True,

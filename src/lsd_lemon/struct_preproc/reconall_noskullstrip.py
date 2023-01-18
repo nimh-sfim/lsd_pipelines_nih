@@ -1,6 +1,7 @@
 from nipype.pipeline.engine import Workflow, Node
 import nipype.interfaces.utility as util
 import nipype.interfaces.freesurfer as fs
+#from nipype.workflows.smri.freesurfer.recon import create_skullstripped_recon_flow
 from nipype.workflows.smri.freesurfer import create_skullstripped_recon_flow
 
 '''

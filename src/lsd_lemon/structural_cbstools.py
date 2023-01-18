@@ -14,7 +14,7 @@ Uses file structure set up by conversion
 '''
 
 def create_structural(subject, working_dir, data_dir, freesurfer_dir, out_dir,
-                standard_brain):
+                standard_brain,anat_prefix):
     
     # main workflow
     struct_preproc = Workflow(name='mp2rage_preproc')
@@ -22,9 +22,13 @@ def create_structural(subject, working_dir, data_dir, freesurfer_dir, out_dir,
     struct_preproc.config['execution']['crashdump_dir'] = struct_preproc.base_dir + "/crash_files"
     
     # select files
-    templates={'inv2': 'nifti/mp2rage/inv2.nii.gz',
-               't1map': 'nifti/mp2rage/t1map.nii.gz',
-               'uni': 'nifti/mp2rage/uni.nii.gz'}
+    #templates={'inv2': 'nifti/mp2rage/inv2.nii.gz',
+    #           't1map': 'nifti/mp2rage/t1map.nii.gz',
+    #           'uni': 'nifti/mp2rage/uni.nii.gz'}
+    templates={'inv2': subject+'_'+anat_prefix+'_inv-2_mp2rage.nii.gz',
+               't1map': subject+'_'+anat_prefix+'_acq-mp2rage_T1map_ss.nii.gz',
+               #'t1map': subject+'_'+anat_prefix+'_acq-mp2rage_T1map.nii.gz',
+               'uni': subject+'_'+anat_prefix+'_acq-mp2rage_T1w.nii.gz'}
     selectfiles = Node(nio.SelectFiles(templates,
                                        base_directory=data_dir),
                        name="selectfiles")
@@ -71,7 +75,8 @@ def create_structural(subject, working_dir, data_dir, freesurfer_dir, out_dir,
                                                 ('outputnode.anat_brain', 'preprocessed.anat.@brain'),
                                                 ('outputnode.func_mask', 'preprocessed.anat.@func_mask'),
                                                 ('outputnode.wmedge', 'preprocessed.anat.@wmedge'),
-                                                #('outputnode.wmseg', 'preprocessed.mp2rage.brain_extraction.@wmseg')
+                                                ('outputnode.gmseg', 'preprocessed.anat.@gmseg'),
+                            #('outputnode.wmseg', 'preprocessed.mp2rage.brain_extraction.@wmseg')
                                                 ]),
                             (normalize, sink, [('outputnode.anat2std', 'preprocessed.anat.@anat2std'),
                                                ('outputnode.anat2std_transforms', 'preprocessed.anat.transforms2mni.@anat2std_transforms'),

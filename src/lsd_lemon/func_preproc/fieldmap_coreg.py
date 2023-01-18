@@ -15,6 +15,8 @@ def create_fmap_coreg_pipeline(name='fmap_coreg'):
     
     # initiate workflow
     fmap_coreg = Workflow(name='fmap_coreg')
+    fmap_coreg.config['execution']['remove_unnecessary_ouputs']=True
+    fmap_coreg.config['execution']['remove_node_directories']=True
     
     #inputnode 
     inputnode=Node(util.IdentityInterface(fields=['epi_mean',

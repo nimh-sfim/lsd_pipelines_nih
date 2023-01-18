@@ -6,8 +6,9 @@ def time_normalizer(in_file, tr):
     import nitime.fmri.io as io
     import nibabel as nib
     from nipype.utils.filemanip import fname_presuffix
+    T= io.time_series_from_file(str(in_file),normalize='zscore', TR=tr, verbose=True)
+    #T= io.time_series_from_file(in_file,normalize='zscore', TR=tr, verbose=True)
     
-    T= io.time_series_from_file(in_file,normalize='zscore', TR=tr)
     normalized_data = T.data
     
     out_img = nib.Nifti1Image(normalized_data,nib.load(in_file).get_affine())
@@ -15,9 +16,3 @@ def time_normalizer(in_file, tr):
     out_img.to_filename(out_file)
     
     return out_file
-
-
-
-    
-    
-    

@@ -11,6 +11,8 @@ def create_moco_pipeline(name='motion_correction'):
     
     # initiate workflow
     moco=Workflow(name='motion_correction')
+    moco.config['execution']['remove_node_directories']=True
+    moco.config['execution']['remove_unnecesary_outputs']=True
     
     # set fsl output
     fsl.FSLCommand.set_default_output_type('NIFTI_GZ')

@@ -14,7 +14,9 @@ def create_transform_pipeline(name='transfrom_timeseries'):
     
     # initiate workflow
     transform_ts = Workflow(name='transform_timeseries')
-    
+    transform_ts.config['execution']['remove_unnecessary_outputs']=True
+    transform_ts.config['execution']['remove_node_directories']=True
+
     # inputnode
     inputnode=Node(util.IdentityInterface(fields=['orig_ts',
                                                   'anat_head',

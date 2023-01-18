@@ -22,9 +22,13 @@ def create_reconall_pipeline(name='reconall'):
                                                    'fs_subject_id']),
                     name='outputnode')
     
-    # run reconall
-    recon_all = Node(fs.ReconAll(args='-nuiterations 7 -no-isrunning'),
+    # run reconall (ORIGINAL)
+    #recon_all = Node(fs.ReconAll(args='-nuiterations 7 -no-isrunning'),
+    #                 name="recon_all")
+    # run reconall (MEGAN CHANGES)
+    recon_all = Node(fs.ReconAll(args='-autorecon1 -wsthresh 20 -nuiterations 7 -no-isrunning'),
                      name="recon_all")
+    # END OF CHANGES
     recon_all.plugin_args={'submit_specs': 'request_memory = 9000'}
     
     # function to replace / in subject id string with a _
@@ -37,6 +41,5 @@ def create_reconall_pipeline(name='reconall'):
                       (recon_all, outputnode, [('subject_id', 'fs_subject_id'),
                                                ('subjects_dir', 'fs_subjects_dir')])
                       ])
-    
     
     return reconall
